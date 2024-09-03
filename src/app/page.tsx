@@ -1,7 +1,8 @@
-import { Button } from "@/components/ui/button";
+import { AuthScreen } from '@/features/auth/components/AuthScreen';
+
 
 export default function Home() {
   return (
-   <Button variant="slack">dasdasd</Button>
+    <AuthScreen/>
   );
 }
