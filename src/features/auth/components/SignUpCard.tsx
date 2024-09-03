@@ -15,7 +15,7 @@ import {
 import { Input } from '@/components/ui/Input';
 import { Separator } from '@/components/ui/Separator';
 
-import { SignInFlow } from '../types';
+import { SignInFlow, ThirdAuthType } from '../types';
 
 interface SignUpCardProps {
   setState: (state: SignInFlow) => void;
@@ -49,13 +49,13 @@ export const SignUpCard = memo(({ setState }: SignUpCardProps) => {
       });
   }, [password, email, name, confirmPassword, signIn]);
 
-  const onProviderSignUp = useCallback((value: 'github' | 'google') => {
+  const onProviderSignUp = useCallback((value: ThirdAuthType) => {
     setPending(true);
-    // signIn(value)
-    //   .finally(() => {
-    //     setPending(false);
-    //   });
-  }, []);
+    signIn(value)
+      .finally(() => {
+        setPending(false);
+      });
+  }, [signIn]);
 
   const handleSignInClick = useCallback(() => {
     setState(SignInFlow.SIGN_IN);
@@ -118,7 +118,7 @@ export const SignUpCard = memo(({ setState }: SignUpCardProps) => {
         <div className="flex flex-col gap-y-2.5">
           <Button
             disabled={pending}
-            onClick={() => onProviderSignUp('google')}
+            onClick={() => onProviderSignUp(ThirdAuthType.GOOGLE)}
             variant="outline"
             size="lg"
             className="w-full relative"
@@ -128,7 +128,7 @@ export const SignUpCard = memo(({ setState }: SignUpCardProps) => {
           </Button>
           <Button
             disabled={pending}
-            onClick={() => onProviderSignUp('github')}
+            onClick={() => onProviderSignUp(ThirdAuthType.GITHUB)}
             variant="outline"
             size="lg"
             className="w-full relative"
