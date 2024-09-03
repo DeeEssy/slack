@@ -2,7 +2,7 @@ import { memo, useCallback, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { TriangleAlert } from 'lucide-react';
-// import { useAuthActions } from '@convex-dev/auth/react';
+import { useAuthActions } from '@convex-dev/auth/react';
 
 import { Button } from '@/components/ui/Button';
 import { 
@@ -22,7 +22,7 @@ interface SignInCardProps {
 };
 
 export const SignInCard = memo(({ setState }: SignInCardProps) => {
-  // const { signIn } = useAuthActions();
+  const { signIn } = useAuthActions();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -33,22 +33,22 @@ export const SignInCard = memo(({ setState }: SignInCardProps) => {
     e.preventDefault();
 
     setPending(true);
-    // signIn('password', { email, password, flow: 'signIn' })
-    //   .catch(() => {
-    //     setError('Invalid email or password');
-    //   })
-    //   .finally(() => {
-    //     setPending(false);
-    //   });
-  }, [email, password]);
+    signIn('password', { email, password, flow: SignInFlow.SIGN_IN })
+      .catch(() => {
+        setError('Invalid email or password');
+      })
+      .finally(() => {
+        setPending(false);
+      });
+  }, [email, password, signIn]);
 
   const onProviderSignIn = useCallback((value: 'github' | 'google') => {
     setPending(true);
-    // signIn(value)
-    //   .finally(() => {
-    //     setPending(false);
-    //   });
-  }, []);
+    signIn(value)
+      .finally(() => {
+        setPending(false);
+      });
+  }, [signIn]);
 
   const handleSignUpClick = useCallback(() => {
     setState(SignInFlow.SIGN_UP);

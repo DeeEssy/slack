@@ -2,7 +2,7 @@ import { memo, useCallback, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { FaGithub } from 'react-icons/fa';
 import { TriangleAlert } from 'lucide-react';
-// import { useAuthActions } from '@convex-dev/auth/react';
+import { useAuthActions } from '@convex-dev/auth/react';
 
 import { Button } from '@/components/ui/Button';
 import { 
@@ -22,7 +22,7 @@ interface SignUpCardProps {
 };
 
 export const SignUpCard = memo(({ setState }: SignUpCardProps) => {
-  // const { signIn } = useAuthActions();
+  const { signIn } = useAuthActions();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -40,14 +40,14 @@ export const SignUpCard = memo(({ setState }: SignUpCardProps) => {
     }
 
     setPending(true);
-    // signIn('password', { name, email, password, flow: SignInFlow.SIGN_UP })
-    //   .catch(() => {
-    //     setError('Something went wrong');
-    //   })
-    //   .finally(() => {
-    //     setPending(false);
-    //   });
-  }, [password, confirmPassword]);
+    signIn('password', { name, email, password, flow: SignInFlow.SIGN_UP })
+      .catch(() => {
+        setError('Something went wrong');
+      })
+      .finally(() => {
+        setPending(false);
+      });
+  }, [password, email, name, confirmPassword, signIn]);
 
   const onProviderSignUp = useCallback((value: 'github' | 'google') => {
     setPending(true);
